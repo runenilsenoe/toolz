@@ -8,6 +8,8 @@
         <PackageId>runenilsenoe-Toolz</PackageId>
         <Version>1.0.0</Version>
         <Authors>Rune Nilsen Østmoen</Authors>
+        <Description>A Library for everyday C# QOL. Number and string extensions ++</Description>
+        <RepositoryUrl>https://github.com/runenilsenoe/toolz/</RepositoryUrl>
     </PropertyGroup>
     <PropertyGroup>
         <PackageReadmeFile>README.md</PackageReadmeFile>
