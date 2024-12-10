@@ -21,47 +21,60 @@ jobs:
       - name: Setup .NET 9.0
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 9.0
+          dotnet-version: '9.0'
 
       - name: Install Dependencies
         run: dotnet restore
 
-      # Handle versioning based on event type
       - name: Determine Version
         id: version
         run: |
+          BASE_VERSION=$(cat VERSION.txt | tr -d '[:space:]')
+          echo "Base version from VERSION.txt: $BASE_VERSION"
+
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/v* ]]; then
-            # For version tags, extract the version
-            VERSION=${GITHUB_REF#refs/tags/v}
-            echo "Detected version from tag: $VERSION"
+            # For version tags, extract the version from the tag
+            TAG_VERSION=${GITHUB_REF#refs/tags/v}
+            echo "Detected version from tag: $TAG_VERSION"
 
-            # Update .csproj with the new version
-            sed -i "s|<Version>.*</Version>|<Version>$VERSION</Version>|g" **/*.csproj
+            # Update the VERSION.txt file if needed
+            if [ "$TAG_VERSION" != "$BASE_VERSION" ]; then
+              echo "$TAG_VERSION" > VERSION.txt
+              git config user.name "GitHub Actions"
+              git config user.email "actions@github.com"
+              git add VERSION.txt
+              git commit -m "Update version to $TAG_VERSION"
+              BASE_VERSION=$TAG_VERSION
+            fi
 
-            # Commit the updated .csproj file
-            git config user.name "GitHub Actions"
-            git config user.email "actions@github.com"
-            git add **/*.csproj
-            git commit -m "Update version to $VERSION"
-
+            VERSION=$BASE_VERSION
           elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
             # For pull requests, append a pre-release tag
-            VERSION=$(cat **/*.csproj | grep -oPm1 "(?<=<Version>)[^<]+")
-            VERSION="${VERSION}-prerelease-${{ github.run_id }}"
-            echo "Detected pre-release version: $VERSION"
+            VERSION="${BASE_VERSION}-prerelease-${{ github.run_id }}"
+          else
+            # For normal pushes to main (not a tagged release), you might want to
+            # just use the base version, or append a build number
+            # VERSION="${BASE_VERSION}-ci-${{ github.run_number }}"
+            VERSION=$BASE_VERSION
           fi
 
-          # Export the version to the environment
           echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "PACKAGE_VERSION=$VERSION"
 
       - name: Build Solution
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Release /p:Version=${{ env.PACKAGE_VERSION }}
 
       - name: Pack NuGet Package
         run: dotnet pack --configuration Release --output ./packages /p:PackageVersion=${{ env.PACKAGE_VERSION }}
 
       - name: Publish to NuGet
-        if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "packages/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+
+      - name: Publish PR Pre-Release to NuGet
+        if: ${{ github.event_name == 'pull_request' }}
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: dotnet nuget push "packages/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
