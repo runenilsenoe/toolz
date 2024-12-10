@@ -2,8 +2,13 @@ name: Publish to NuGet
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - 'v*.*.*' # Trigger only on version tags pushed to the main branch
+      - 'v*.*.*' # Trigger on semantic version tags
+  pull_request:
+    branches:
+      - main
 
 jobs:
   publish:
@@ -16,18 +21,47 @@ jobs:
       - name: Setup .NET 9.0
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 9.0 # Updated to use .NET 9.0
+          dotnet-version: 9.0
 
       - name: Install Dependencies
         run: dotnet restore
+
+      # Handle versioning based on event type
+      - name: Determine Version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/v* ]]; then
+            # For version tags, extract the version
+            VERSION=${GITHUB_REF#refs/tags/v}
+            echo "Detected version from tag: $VERSION"
+
+            # Update .csproj with the new version
+            sed -i "s|<Version>.*</Version>|<Version>$VERSION</Version>|g" **/*.csproj
+
+            # Commit the updated .csproj file
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git add **/*.csproj
+            git commit -m "Update version to $VERSION"
+
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            # For pull requests, append a pre-release tag
+            VERSION=$(cat **/*.csproj | grep -oPm1 "(?<=<Version>)[^<]+")
+            VERSION="${VERSION}-prerelease-${{ github.run_id }}"
+            echo "Detected pre-release version: $VERSION"
+          fi
+
+          # Export the version to the environment
+          echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Build Solution
         run: dotnet build --configuration Release
 
       - name: Pack NuGet Package
-        run: dotnet pack --configuration Release --output ./packages
+        run: dotnet pack --configuration Release --output ./packages /p:PackageVersion=${{ env.PACKAGE_VERSION }}
 
       - name: Publish to NuGet
+        if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: dotnet nuget push "packages/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
