@@ -8,7 +8,10 @@
 
 ## Features
 
-### String Manipulation
+### Number Extensions
+- **Range check methods**: Short way to check numbers for different lengths intervals and ranges..
+
+### String Extensions
 - **Title Case Conversion**: Easily convert strings to title case.
 - **Slugify**: Generate URL-safe strings for SEO-friendly links.
 - **Formatted String Builders**: Simplify building lists, paragraphs, and headings with extensions like `NewListPoint` and `AddHeading`.
@@ -25,7 +28,7 @@
 - **Task Timing**: Measure and log the execution time of tasks, functions, and actions.
 - **Retry with Delay**: Automatically retry asynchronous operations with configurable delays.
 
-## Incoming 
+## Incoming
 ### File and Directory Helpers
 - **Safe Directory Creation**: Ensure a directory exists without manual checks.
 - **Read and Write Files**: Simplified methods to handle file encoding and content.
