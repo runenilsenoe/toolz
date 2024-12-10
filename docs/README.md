@@ -3,26 +3,26 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Build Status](https://github.com/runenilsenoe/toolz/actions/workflows/build-and-publish.yaml/badge.svg)](https://github.com/runenilsenoe/toolz/actions) [![NuGet](https://img.shields.io/nuget/v/runenilsenoe-toolz.svg)](https://www.nuget.org/packages/runenilsenoe-toolz)
 
 **Toolz** is a .NET library providing a collection of utilities and extensions to enhance productivity, simplify common coding tasks, and improve the overall quality of .NET applications.
+Feel free to steal as much as possible and apply suggestions for features
 
 ---
 
 ## Features
 
 ### Number Extensions
-- **Range check methods**: Short way to check numbers for different lengths intervals and ranges..
+- **Number Extensions**: Check if a number is positive, negative, even, odd, within a range, or has a specific number of digits.
 
 ### String Extensions
 - **Title Case Conversion**: Easily convert strings to title case.
 - **Slugify**: Generate URL-safe strings for SEO-friendly links.
-- **Formatted String Builders**: Simplify building lists, paragraphs, and headings with extensions like `NewListPoint` and `AddHeading`.
+- **Formatted String Builders**: Simplify building lists, paragraphs, and headings with extensions.
 
 ### Date and Time Utilities
 - **Start/End of Day**: Quickly get the start or end of a day for `DateTime`.
 - **Age Calculation**: Calculate the age based on a given birthdate.
 
 ### Validation
-- **Number Validations**: Check if a number is positive, negative, even, odd, within a range, or has a specific number of digits.
-- **String Validations**: Validate email addresses, credit card numbers (Luhn algorithm), and passwords for strength.
+- **Specific String Validations**: Validate email addresses, credit card numbers (Luhn algorithm), and passwords for strength.
 
 ### Asynchronous Helpers
 - **Task Timing**: Measure and log the execution time of tasks, functions, and actions.
