@@ -114,4 +114,9 @@ public static class TaskTiming
         TimeSpan elapsed = stopwatch.Elapsed;
         return (result, elapsed);
     }
+    
+    public static async Task<bool> RunWithTimeout(this Task task, TimeSpan timeout)
+    {
+        return await Task.WhenAny(task, Task.Delay(timeout)) == task;
+    }
 }
