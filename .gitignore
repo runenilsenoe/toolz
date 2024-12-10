@@ -1,0 +1,66 @@
+# Ignore build outputs
+bin/
+obj/
+out/
+
+# User-specific files
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.userprefs
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Visual Studio files
+*.vs/
+.vs/
+
+# Rider and JetBrains IDEs
+.idea/
+*.sln.iml
+
+# Logs and crash reports
+*.log
+crashlytics/
+
+# Package directories
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+
+# Debug and Release folders
+Debug/
+Release/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swm
+
+# Config files
+appsettings.Development.json
+secrets.json
+
+# Other tool-specific files
+*.coverage
+*.coveragexml
+*.testresults
+*.tsp
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# File and folder exclusions for performance
+!src/**/*.cs
+*.lock.json
+node_modules/
+

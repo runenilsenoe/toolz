@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0 # Specify your .NET version
+
+      - name: Restore Dependencies
+        run: dotnet restore Solution.sln
+
+      - name: Build Solution
+        run: dotnet build Solution.sln --configuration Release
+
+      - name: Run Tests
+        run: dotnet test Solution.sln --no-build --verbosity normal

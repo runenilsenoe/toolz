@@ -1,0 +1,30 @@
+name: Publish to NuGet
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Trigger only on version tags pushed to the main branch
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0 # Specify your .NET version
+
+      - name: Restore Dependencies
+        run: dotnet restore Solution.sln
+
+      - name: Build Solution
+        run: dotnet build Solution.sln --configuration Release
+
+      - name: Publish to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "src/bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
