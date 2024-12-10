@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks", "src\Tasks\Tasks.csproj", "{3127007E-B518-41FD-A39D-87E31D5B8AA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolz", "src\Toolz\Toolz.csproj", "{3127007E-B518-41FD-A39D-87E31D5B8AA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
