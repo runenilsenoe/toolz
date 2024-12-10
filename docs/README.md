@@ -1,6 +1,6 @@
 # **toolz - Tools for .NET**
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Build Status](https://github.com/runenilsenoe/toolz/actions/workflows/build.yml/badge.svg)](https://github.com/runenilsenoe/toolz/actions) [![NuGet](https://img.shields.io/nuget/v/runenilsenoe-toolz.svg)](https://www.nuget.org/packages/runenilsenoe-toolz)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Build Status](https://github.com/runenilsenoe/toolz/actions/workflows/build-and-publish.yaml/badge.svg)](https://github.com/runenilsenoe/toolz/actions) [![NuGet](https://img.shields.io/nuget/v/runenilsenoe-toolz.svg)](https://www.nuget.org/packages/runenilsenoe-toolz)
 
 improve your QOL - general tooling for dotnet
 
