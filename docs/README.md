@@ -41,8 +41,8 @@ Feel free to steal as much as possible and apply suggestions for features
 
 ## Installation
 
-Toolz is available as a [NuGet package](https://www.nuget.org/packages/Toolz). You can install it using the NuGet Package Manager, .NET CLI, or by adding it to your project file.
+Toolz is available as a [NuGet package](https://www.nuget.org/packages/runenilsenoe-Toolz). You can install it using the NuGet Package Manager, .NET CLI, or by adding it to your project file.
 
 ### Using .NET CLI
 ```bash
-dotnet add package Toolz --version x.y.z
+dotnet add package runenilsenoe-Toolz --version x.y.z
