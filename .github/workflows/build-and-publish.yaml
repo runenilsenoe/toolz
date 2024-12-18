@@ -18,6 +18,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Check for Changes in src Directory
+        id: changes
+        run: |
+          if git diff --quiet HEAD^ HEAD -- src/; then
+            echo "No changes in src directory. Skipping further steps."
+            echo "continue=false" >> $GITHUB_ENV
+          else
+            echo "Changes detected in src directory. Proceeding."
+            echo "continue=true" >> $GITHUB_ENV
+
+      - name: Stop Job if No Changes
+        if: env.continue == 'false'
+        run: exit 0
       - name: Setup .NET 9.0
         uses: actions/setup-dotnet@v3
         with:
