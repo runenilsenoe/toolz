@@ -9,6 +9,24 @@ namespace Tasks.Timing;
 
 public static class TaskTiming
 {
+    public static async Task LogTimingToConsole(this Task task, ILogger? logger = null,  Action<TimeSpan>? elapsedAction = null, [CallerMemberName] string callerName = "", string? callerMemberName = null)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        await task;
+        stopwatch.Stop();
+
+        TimeSpan elapsed = stopwatch.Elapsed;
+        elapsedAction?.Invoke(elapsed);
+
+        callerMemberName = string.IsNullOrEmpty(callerMemberName)
+            ? "" : $"- {callerMemberName}";
+        
+        var message = $"Calling method: {callerName}" + callerMemberName + $" used {elapsed.TotalMilliseconds} to execute";
+        if (logger != null)
+            logger.LogInformation(message);
+        else
+            Console.WriteLine(message);
+    }
     public static async Task<T> LogTimingToConsole<T>(this Task<T> task, ILogger? logger = null,  Action<TimeSpan>? elapsedAction = null, [CallerMemberName] string callerName = "", string? callerMemberName = null)
     {
         var stopwatch = Stopwatch.StartNew();
