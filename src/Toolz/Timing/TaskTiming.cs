@@ -27,6 +27,7 @@ public static class TaskTiming
         else
             Console.WriteLine(message);
     }
+    
     public static async Task<T> LogTimingToConsole<T>(this Task<T> task, ILogger? logger = null,  Action<TimeSpan>? elapsedAction = null, [CallerMemberName] string callerName = "", string? callerMemberName = null)
     {
         var stopwatch = Stopwatch.StartNew();
