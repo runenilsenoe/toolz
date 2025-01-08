@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
+using Tasks.Extensions;
+using Tasks.Models.Enums;
+
 // ReSharper disable SuggestVarOrType_SimpleTypes
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
@@ -9,7 +12,7 @@ namespace Tasks.Timing;
 
 public static class TaskTiming
 {
-    public static async Task LogTimingToConsole(this Task task, ILogger? logger = null,  Action<TimeSpan>? elapsedAction = null, [CallerMemberName] string callerName = "", string? callerMemberName = null)
+    public static async Task LogTimingToConsole(this Task task, ILogger? logger = null,  Action<TimeSpan>? elapsedAction = null, [CallerMemberName] string callerName = "", string? callerMemberName = null, TimeSpanFormat format = TimeSpanFormat.Milliseconds)
     {
         var stopwatch = Stopwatch.StartNew();
         await task;
@@ -21,7 +24,7 @@ public static class TaskTiming
         callerMemberName = string.IsNullOrEmpty(callerMemberName)
             ? "" : $"- {callerMemberName}";
         
-        var message = $"Calling method: {callerName}" + callerMemberName + $" used {elapsed.TotalMilliseconds} to execute";
+        var message = $"Calling method: {callerName}" + callerMemberName + $" used {elapsed.TotalMillisecondsStringWithUnit()} to execute";
         if (logger != null)
             logger.LogInformation(message);
         else
@@ -40,7 +43,7 @@ public static class TaskTiming
         callerMemberName = string.IsNullOrEmpty(callerMemberName)
             ? "" : $"- {callerMemberName}";
         
-        var message = $"Calling method: {callerName}" + callerMemberName + $" used {elapsed.TotalMilliseconds} to execute";
+        var message = $"Calling method: {callerName}" + callerMemberName + $" used {elapsed.TotalMillisecondsStringWithUnit()} to execute";
         if (logger != null)
             logger.LogInformation(message);
         else
